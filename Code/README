@@ -1,0 +1,39 @@
+Run compile.sh to compile the fortran files.
+
+The main function to run is "aiFeynman", located in aiFeynman.py:
+
+The function has the following parameters (together with their predefined values):
+
+aiFeynman(pathdir, maxdeg_polyfit=4, err_threshold_polyfit=0.0001, BF_try_time=30, BF_error_threshold=0.00001, BF_ops_file_type="14ops.txt", type_of_BF=2, first_run=1, dim_red_file="", use_MDL=0, time_limit=36000, move_dir=1, make_eq_vars=1, check_prefactor=1,NN_train_epochs=-1,err_sep_mult_factor=-1, err_sep_add_factor=-1, err_sym_divide_factor=-1, err_sym_mult_factor=-1, err_sym_plus_factor=-1, err_sym_minus_factor=-1)
+
+pathdir - path to the file containing the data
+maxdeg_polyfit - maximum degree of the polynomial tried by the polynomial fit routine
+err_threshold_polyfit - error threshold for a solution of the polynomial fit routine to be kept
+BF_try_time - time limit for each brute force code call
+BF_error_threshold - error threshold for a solution of the brute force routine to be kept
+BF_ops_file_type - file containing the symbols to be used in the brute force code
+type_of_BF - parameter deciding if the brute force is looking for an additive or multiplicative factor (see paper for details). Mainly used for the recursive calls, in the first call of the function both versions are considered
+first_run - it checks if the function call is the first one or a recursive one (should be always kept equal to 1 for the main call)
+dim_red_file - file with the variables names and their units. If no file is passed, the variables will be assumed dimensionless and some predetermined names will be assigned to them for the found expression 
+use_MDL - parameter used to turn on and off the use of the minimum description length
+time_limit - time limit for the whole program run
+move_dir - parameter used to move the solved files to specific folders (for example results/solved). 
+make_eq_vars - parameter used to turn on and off making 2 variables equal. Should be kept equal to 1 in the main call.
+check_prefactor - parameter used to turn on and off checking for the prefactor when using the brute force. Should be kept to 1 in the main call.
+NN_train_epochs - number of epochs for the training. If nothing is passed, the number of epochs is 100 times the number of independent variables
+err_sep_mult_factor - ratio between the error threshold for multiplicative separative check and the validation error of the neural network (see the paper for details)
+err_sep_add_factor - ratio between the error threshold for additive separative check and the validation error of the neural network (see the paper for details)
+err_sym_divide_factor - ratio between the error threshold for a/b symmetry check and the validation error of the neural network (see the paper for details)
+err_sym_mult_factor - ratio between the error threshold for a*b symmetry check and the validation error of the neural network (see the paper for details)
+err_sym_plus_factor - ratio between the error threshold for a+b symmetry check and the validation error of the neural network (see the paper for details)
+err_sym_minus_factor - ratio between the error threshold for a-b check and the validation error of the neural network (see the paper for details)
+
+The solution files will be saved in the directory called results/solutions.
+
+An example of how to run the code can be found in example.py.
+
+run_aiFeynman.py allows calling the aiFeynman function from the command line. 
+e.g. python run_aiFeynman.py --filename=../data/001_1.6.2a
+python run_aiFeynman.py --help displays all the available parameters that can be passed to the function.
+
+Three examples of data can be found in the data/ directory. They correspond to equations I.6.20a, I.6.20, I.6.20b from the AI Feynman: a Physics-Inspired Method for Symbolic Regression paper.

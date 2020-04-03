@@ -1,4 +1,4 @@
-import argparse
+import argparsez
 from aiFeynman import aiFeynman
 
 parser = argparse.ArgumentParser()

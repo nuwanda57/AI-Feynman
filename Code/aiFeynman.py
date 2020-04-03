@@ -3,62 +3,66 @@ import os
 import shutil
 import subprocess
 from subprocess import call
-from S_multipolyfit import getBest
 import sys
 import csv
-from S_polyclean_file import polyfit
-from S_NN_sep_mult import NN_sep_mult
-from S_NN_sep_add import NN_sep_add
-from S_NN_equal_vars import NN_equal_vars
-from S_brute_force import brute_force
-from S_get_inverse import get_inverse
-from S_get_log import get_log
-from S_get_exp import get_exp
-from S_get_sin import get_sin
-from S_get_asin import get_asin
-from S_get_cos import get_cos
-from S_get_acos import get_acos
-from S_get_tan import get_tan
-from S_get_atan import get_atan
-from S_get_squared import get_squared
-from S_get_sqrt import get_sqrt
-from S_create_new_file_for_NN_add import create_new_file_for_NN_add
-from S_create_new_file_for_NN_mult import create_new_file_for_NN_mult
-from S_create_new_file_for_NN_eq_vars import create_new_file_for_NN_eq_vars
-from S_translational_symmetry_minus import translational_symmetry_minus
-from S_translational_symmetry_multiply import translational_symmetry_multiply
-from S_translational_symmetry_divide import translational_symmetry_divide
-from S_translational_symmetry_plus import translational_symmetry_plus
-from S_NN_train import NN_train
-from S_generate_new_dimRed_xlsx_file_translation import generate_new_dimRed_xlsx_file_translation
-from S_replace_variables import replace_variables
-from S_NN_eval import NN_eval
-from S_generate_new_dimRed_xlsx_file_equal_vars import generate_new_dimRed_xlsx_file_equal_vars
-from S_get_RMS import get_RMS
-from S_create_variables_file import create_variables_file
-
-from S_change_input import input_divide_2
-from S_change_input import input_multiply_2
-from S_change_input import input_exp
-from S_change_input import input_log
-from S_change_input import input_sqrt
-from S_change_input import input_squared
-from S_change_input import input_inverse
-from S_change_input import input_sin
-from S_change_input import input_asin
-from S_change_input import input_cos
-from S_change_input import input_acos
-from S_change_input import input_tan
-from S_change_input import input_atan
-
-from S_try_bf_polyfit import try_bf_polyfit
-from S_generate_new_dimRed_xlsx_file_transf_input import generate_new_dimRed_xlsx_file_transf_input
-from S_generate_new_dimRed_xlsx_file_separable import generate_new_dimRed_xlsx_file_separable
+import importlib
 import pandas as pd
 from tqdm import tqdm
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr
 import time
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+getBest = importlib.import_module('AI-Feynman.Code.S_multipolyfit').getBest
+polyfit = importlib.import_module('AI-Feynman.Code.S_polyclean_file').polyfit
+NN_sep_mult = importlib.import_module('AI-Feynman.Code.S_NN_sep_mult').NN_sep_mult
+NN_sep_add = importlib.import_module('AI-Feynman.Code.S_NN_sep_add').NN_sep_add
+NN_equal_vars = importlib.import_module('AI-Feynman.Code.S_NN_equal_vars').NN_equal_vars
+brute_force = importlib.import_module('AI-Feynman.Code.S_brute_force').brute_force
+get_inverse = importlib.import_module('AI-Feynman.Code.S_get_invers').get_inverse
+get_log = importlib.import_module('AI-Feynman.Code.S_get_log').get_log
+get_exp = importlib.import_module('AI-Feynman.Code.S_get_exp').get_exp
+get_sin = importlib.import_module('AI-Feynman.Code.S_get_sin').get_sin
+get_asin = importlib.import_module('AI-Feynman.Code.S_get_asin').get_asin
+get_cos = importlib.import_module('AI-Feynman.Code.S_get_cos').get_cos
+get_acos = importlib.import_module('AI-Feynman.Code.S_get_acos').get_acos
+get_tan = importlib.import_module('AI-Feynman.Code.S_get_tan').get_tan
+get_atan = importlib.import_module('AI-Feynman.Code.S_get_atan').get_atan
+get_squared = importlib.import_module('AI-Feynman.Code.S_get_squared').get_squared
+get_sqrt = importlib.import_module('AI-Feynman.Code.S_get_sqrt').get_sqrt
+create_new_file_for_NN_add = importlib.import_module('AI-Feynman.Code.S_create_new_file_for_NN_add').create_new_file_for_NN_add
+create_new_file_for_NN_mult = importlib.import_module('AI-Feynman.Code.S_create_new_file_for_NN_mult').create_new_file_for_NN_mult
+create_new_file_for_NN_eq_vars = importlib.import_module('AI-Feynman.Code.S_create_new_file_for_NN_eq_vars').create_new_file_for_NN_eq_vars
+translational_symmetry_minus = importlib.import_module('AI-Feynman.S_translational_symmetry_minus').translational_symmetry_minus
+translational_symmetry_multiply = importlib.import_module('AI-Feynman.S_translational_symmetry_multiply').translational_symmetry_multiply
+translational_symmetry_divide = importlib.import_module('AI-Feynman.Code.S_translational_symmetry_divide').translational_symmetry_divide
+translational_symmetry_plus = importlib.import_module('AI-Feynman.Code.S_translational_symmetry_plus').gtranslational_symmetry_plus
+NN_train = importlib.import_module('AI-Feynman.Code.S_NN_train').NN_train
+generate_new_dimRed_xlsx_file_translation = importlib.import_module('AI-Feynman.Code.S_generate_new_dimRed_xlsx_file_translation').generate_new_dimRed_xlsx_file_translation
+generate_new_dimRed_xlsx_file_equal_vars = importlib.import_module('AI-Feynman.Code.S_generate_new_dimRed_xlsx_file_equal_vars').generate_new_dimRed_xlsx_file_equal_vars
+get_RMS = importlib.import_module('AI-Feynman.Code.S_get_RMS').get_RMS
+create_variables_file = importlib.import_module('AI-Feynman.Code.S_get_RMS').create_variables_file
+
+input_divide_2 = importlib.import_module('AI-Feynman.Code.S_change_input').input_divide_2
+input_multiply_2 = importlib.import_module('AI-Feynman.Code.S_change_input').input_multiply_2
+input_exp = importlib.import_module('AI-Feynman.Code.S_change_input').input_exp
+input_log = importlib.import_module('AI-Feynman.Code.S_change_input').input_log
+input_sqrt = importlib.import_module('AI-Feynman.Code.S_change_input').input_sqrt
+input_squared = importlib.import_module('AI-Feynman.Code.S_change_input').input_squared
+input_inverse = importlib.import_module('AI-Feynman.Code.S_change_input').input_inverse
+input_sin = importlib.import_module('AI-Feynman.Code.S_change_input').input_sin
+input_asin = importlib.import_module('AI-Feynman.Code.S_change_input').input_asin
+input_cos = importlib.import_module('AI-Feynman.Code.S_change_input').input_cos
+input_acos = importlib.import_module('AI-Feynman.Code.S_change_input').input_acos
+input_tan = importlib.import_module('AI-Feynman.Code.S_change_input').input_tan
+input_atan = importlib.import_module('AI-Feynman.Code.S_change_input').input_atan
+
+try_bf_polyfit = importlib.import_module('AI-Feynman.Code.S_try_bf_polyfit').try_bf_polyfit
+generate_new_dimRed_xlsx_file_transf_input = importlib.import_module('AI-Feynman.Code.S_generate_new_dimRed_xlsx_file_transf_input').generate_new_dimRed_xlsx_file_transf_input
+generate_new_dimRed_xlsx_file_separable = importlib.import_module('AI-Feynman.Code.S_generate_new_dimRed_xlsx_file_separable').generate_new_dimRed_xlsx_file_separable
+input_acos = importlib.import_module('AI-Feynman.Code.S_change_input').input_acos
+input_tan = importlib.import_module('AI-Feynman.Code.S_change_input').input_tan
+input_atan = importlib.import_module('AI-Feynman.Code.S_change_input').input_atan
 
 try:
     os.mkdir("results/")
@@ -93,13 +97,13 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
     original_dir = pathdir
 
     try:
-        
+
         # Create a file with the error threshold to be used by the mathematica code
         np.savetxt("BF_error_threshold_file.txt",[BF_error_threshold], fmt='%f')
-        # Save the RMS of the output of the function                                                                                             
+        # Save the RMS of the output of the function
         get_RMS(pathdir,filename)
 
-################################ NO TRANSFORM ################################ 
+################################ NO TRANSFORM ################################
         if time.time() - start_time < time_limit:
             formula, methods_tried, not_replaced_formula = try_bf_polyfit(pathdir, filename, methods_tried, BF_try_time, BF_ops_file_type, BF_sep_type, use_MDL, check_prefactor, dim_red_file, maxdeg_polyfit, err_threshold_polyfit, first_run, move_dir, original_dir, solved_dir, "brute_force", "polyfit")
             if formula!=0:
@@ -107,7 +111,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ LOG ################################        
+################################ LOG ################################
         if time.time() - start_time < time_limit:
             print("LOG")
             if first_run:
@@ -130,12 +134,12 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                 try:
                     formula, methods_tried, not_replaced_formula = try_bf_polyfit(pathdir_transf, filename+"-inverse", methods_tried, BF_try_time, BF_ops_file_type, BF_sep_type, use_MDL, check_prefactor, dim_red_file, maxdeg_polyfit, err_threshold_polyfit, first_run, move_dir, original_dir, solved_dir, "brute_force_inverse", "polyfit_inverse_f")
                     if formula!=0:
-                        return (1/formula, methods_tried, 1/not_replaced_formula)                
+                        return (1/formula, methods_tried, 1/not_replaced_formula)
                 except:
                     pass
         else:
             return (0, methods_tried, 0)
-################################ SQUARED ################################ 
+################################ SQUARED ################################
         if time.time() - start_time < time_limit:
             print("SQUARED")
             if first_run:
@@ -144,7 +148,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                 try:
                     formula, methods_tried, not_replaced_formula = try_bf_polyfit(pathdir_transf, filename+"-squared", methods_tried, BF_try_time, BF_ops_file_type, BF_sep_type, use_MDL, check_prefactor, dim_red_file, maxdeg_polyfit, err_threshold_polyfit, first_run, move_dir, original_dir, solved_dir, "brute_force_squared", "polyfit_squared_f")
                     if formula!=0:
-                        return (sqrt(formula), methods_tried, sqrt(not_replaced_formula))                
+                        return (sqrt(formula), methods_tried, sqrt(not_replaced_formula))
                 except:
                     pass
         else:
@@ -158,7 +162,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                 try:
                     formula, methods_tried, not_replaced_formula = try_bf_polyfit(pathdir_transf, filename+"-sin", methods_tried, BF_try_time, BF_ops_file_type, BF_sep_type, use_MDL, check_prefactor, dim_red_file, maxdeg_polyfit, err_threshold_polyfit, first_run, move_dir, original_dir, solved_dir, "brute_force_sin", "polyfit_sin_f")
                     if formula!=0:
-                        return (asin(formula), methods_tried, asin(not_replaced_formula))                
+                        return (asin(formula), methods_tried, asin(not_replaced_formula))
                 except:
                     pass
         else:
@@ -311,7 +315,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                     return (f_trans[0], methods_tried,f_trans[2])
         else:
             return (0, methods_tried, 0)
-################################ TRANSLATIONAL SYMMETRY * * ################################                                                                                    
+################################ TRANSLATIONAL SYMMETRY * * ################################
         if time.time() - start_time < time_limit:
             print("Checking for translational symmetry * *")
             methods_tried = methods_tried + ["translational_symmetry_*_*"]
@@ -331,18 +335,18 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                     return (f_trans[0], methods_tried,f_trans[2])
         else:
             return (0, methods_tried, 0)
-################################ TRANSLATIONAL SYMMETRY + - ################################                                                                                        
+################################ TRANSLATIONAL SYMMETRY + - ################################
         if time.time() - start_time < time_limit:
             print("Checking for translational symmetry + -")
             methods_tried = methods_tried + ["translational_symmetry_+_-"]
-            # get the indices where you can make the translational replacement                                                                                                      
+            # get the indices where you can make the translational replacement
             if os.path.isfile("results/NN_trained_models/models/"+filename+".h5")==False:
                 NN_train(pathdir,filename, NN_train_epochs)
             file_trans, index1, index2 = translational_symmetry_plus(pathdir,filename, err_sym_plus_factor)
             if file_trans!=0:
                 print("TRANSLATIONAL SYMMETRY (+) FOUND!")
                 symbol = "+"
-                # create the new dimRed variables (i.e. new xlsx file)                                                                                                              
+                # create the new dimRed variables (i.e. new xlsx file)
                 new_dim_red_file = generate_new_dimRed_xlsx_file_translation(dim_red_file,filename.split('-')[0],symbol,index1,index2)
                 f_trans = find_formula("results/translated_data_plus/", file_trans, methods_tried, maxdeg_polyfit, err_threshold_polyfit, BF_try_time, BF_error_threshold, BF_ops_file_type, BF_sep_type, first_run, new_dim_red_file, use_MDL, 0, time_limit, make_eq_vars, check_prefactor, NN_train_epochs,err_sep_mult_factor, err_sep_add_factor, err_sym_divide_factor, err_sym_mult_factor, err_sym_plus_factor, err_sym_minus_factor)
                 methods_tried = f_trans[1]
@@ -408,7 +412,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                 #check if the first file has a non-zero output (without the constant term): sin(alpha)
                 if f_s_a_1[0]!=0:
                     print("CREATE A NEW FILE!")
-                    new_NN_add_file = create_new_file_for_NN_add(pathdir,filename,filename+"-sep_add",indices_1,f_s_a_1[2]) 
+                    new_NN_add_file = create_new_file_for_NN_add(pathdir,filename,filename+"-sep_add",indices_1,f_s_a_1[2])
                     # get recursively the other part of the equation (the first one is f_s_a_1, the second one is new_f_s_a_1)
                     new_dim_red_file_separable = generate_new_dimRed_xlsx_file_separable(dim_red_file,filename.split('-')[0],indices_1, "right")
                     new_f_s_a_1 = find_formula(pathdir, new_NN_add_file, methods_tried, maxdeg_polyfit, err_threshold_polyfit, BF_try_time, BF_error_threshold, BF_ops_file_type, BF_sep_type, first_run, new_dim_red_file_separable, use_MDL, 0, time_limit, make_eq_vars, check_prefactor, NN_train_epochs,err_sep_mult_factor, err_sep_add_factor, err_sym_divide_factor, err_sym_mult_factor, err_sym_plus_factor, err_sym_minus_factor)
@@ -419,7 +423,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                         if move_dir!=0:
                             shutil.move(original_dir+filename.split('-')[0], solved_dir)
                         return(f_s_a_1[0]+new_f_s_a_1[0],methods_tried,f_s_a_1[0]+new_f_s_a_1[0]) # temporary solution
-                    
+
         else:
             return (0, methods_tried, 0)
 
@@ -448,7 +452,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                                     # get the newly created file by dividing f(a,b)/f(a,a)
                                     new_eq_var_file = create_new_file_for_NN_eq_vars(pathdir,filename,filename+"-eq_vars",i_idx,fs_1[2])
                                     # try to find the formula for the equation for f(a,b)/f(a,a) (this DOESN'T use NN output)
-                                    
+
                                     ################### REPLACE THE 300 WITH BF_try_time !!!!!!! THIS IS JUST FOR TESTING PURPOSES
                                     fs_2 = find_formula(pathdir, new_eq_var_file, methods_tried, maxdeg_polyfit, err_threshold_polyfit, 300, BF_error_threshold, BF_ops_file_type, BF_sep_type, first_run, dim_red_file, use_MDL, 0, time_limit, 0, check_prefactor, NN_train_epochs,err_sep_mult_factor, err_sep_add_factor, err_sym_divide_factor, err_sym_mult_factor, err_sym_plus_factor, err_sym_minus_factor)
                                     methods_tried = fs_2[1]
@@ -460,7 +464,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
 
         else:
             return (0, methods_tried, 0)
-        
+
 ################################ DIVIDE INPUT BY 2 ################################
         if time.time() - start_time < time_limit:
             print("Divide input variables by 2!")
@@ -478,8 +482,8 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-        
-################################ MULTIPLY INPUT BY 2 ################################                                                                                              
+
+################################ MULTIPLY INPUT BY 2 ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Multiply input variables by 2!")
@@ -498,8 +502,8 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                         return(f_nm_mult_2[0],methods_tried,f_nm_mult_2[2])
         else:
             return (0, methods_tried, 0)
-        
-################################ EXP INPUT ################################                                                                                              
+
+################################ EXP INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 methods_tried = methods_tried + ["exp_input"]
@@ -517,7 +521,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
                         return(f_nm_exp[0],methods_tried,f_nm_exp[2])
         else:
             return (0, methods_tried, 0)
-################################ LOG INPUT ################################                                                                                                         
+################################ LOG INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Log input variables")
@@ -537,7 +541,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ SQRT INPUT ################################                                                                                                        
+################################ SQRT INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Sqrt input variables")
@@ -557,7 +561,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ SQUARED INPUT ################################                                                                                                   
+################################ SQUARED INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Squared input variables")
@@ -577,7 +581,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ INVERSE INPUT ################################                                                                                                    
+################################ INVERSE INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Inverse input variables")
@@ -597,7 +601,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ SIN INPUT ################################                                                                                                        
+################################ SIN INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Sin input variables")
@@ -617,7 +621,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ ASIN INPUT ################################                                                                                                       
+################################ ASIN INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Arcsin input variables")
@@ -637,7 +641,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ COS INPUT ################################                                                                                                        
+################################ COS INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Cos input variables")
@@ -657,7 +661,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ ACOS INPUT ################################                                                                                                       
+################################ ACOS INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Arccos input variables")
@@ -677,7 +681,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ TAN INPUT ################################                                                                                                        
+################################ TAN INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Tan input variables")
@@ -697,7 +701,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
         else:
             return (0, methods_tried, 0)
 
-################################ ATAN INPUT ################################                                                                                                       
+################################ ATAN INPUT ################################
         if time.time() - start_time < time_limit:
             if first_run:
                 print("Arctan input variables")
@@ -723,7 +727,7 @@ def find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold
 
     return (0, methods_tried, 0)
 
-        
+
 ################################ MAIN PROGRAM ################################
 
 def aiFeynman(pathdir, maxdeg_polyfit=4, err_threshold_polyfit=0.0001, BF_try_time=60, BF_error_threshold=0.00001, BF_ops_file_type="14ops.txt", type_of_BF=2, first_run=1, dim_red_file="", use_MDL=0, time_limit=3600, move_dir=0, make_eq_vars=1, check_prefactor=1,NN_train_epochs=-1,err_sep_mult_factor=-1, err_sep_add_factor=-1, err_sym_divide_factor=-1, err_sym_mult_factor=-1, err_sym_plus_factor=-1, err_sym_minus_factor=-1):
@@ -738,8 +742,8 @@ def aiFeynman(pathdir, maxdeg_polyfit=4, err_threshold_polyfit=0.0001, BF_try_ti
         dim_red_file = create_variables_file(nn_vars,fn_list[0])
 
     original_dir = pathdir
-    formulas_solved_part = pd.read_excel(dim_red_file)["Formula"]                                                                                                           
-    filename_solved_part = pd.read_excel(dim_red_file)["Filename"]  
+    formulas_solved_part = pd.read_excel(dim_red_file)["Formula"]
+    filename_solved_part = pd.read_excel(dim_red_file)["Filename"]
 
     for filename in fn_list:
         try:
@@ -766,14 +770,14 @@ def aiFeynman(pathdir, maxdeg_polyfit=4, err_threshold_polyfit=0.0001, BF_try_ti
                 solved_file.write(str(methods_tried))
                 solved_file.write("\n")
                 continue
-        
+
             translational_operations = [] # use this to keep track of the translational operations. The format should be ["*",i,j,"-",k,l]
             # check if the formula was found at all and save it to file
             start_time = time.time()
 
             formula, methods_tried, _,  = find_formula(pathdir, filename, methods_tried, maxdeg_polyfit, err_threshold_polyfit, BF_try_time,BF_error_threshold, BF_ops_file_type, type_of_BF, first_run, dim_red_file, use_MDL, move_dir, time_limit, make_eq_vars, check_prefactor,NN_train_epochs,err_sep_mult_factor, err_sep_add_factor, err_sym_divide_factor, err_sym_mult_factor, err_sym_plus_factor, err_sym_minus_factor)
 
-            
+
             print("FORMULA: ", formula)
             if formula!=0:
                 solved_file.write(filename)

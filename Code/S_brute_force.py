@@ -1,14 +1,14 @@
 import numpy as np
 import os
-import shutil
 import subprocess
-from subprocess import call
 import sys
-import csv
-import sympy as sp
-from S_readable_formulas_from_bruteForce_v1 import readable_formulas_from_bruteForce_v1
-from S_readable_formulas_from_bruteForce_v2 import readable_formulas_from_bruteForce_v2
+import importlib
 from sympy.parsing.sympy_parser import parse_expr
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+readable_formulas_from_bruteForce_v1 = importlib.import_module('AI-Feynman.Code.S_readable_formulas_from_bruteForce_v1').readable_formulas_from_bruteForce_v1
+readable_formulas_from_bruteForce_v2 = importlib.import_module(
+    'AI-Feynman.Code.S_readable_formulas_from_bruteForce_v2').readable_formulas_from_bruteForce_v2
 
 
 # sep_type = 3 for add and 2 for mult and 1 for normal
